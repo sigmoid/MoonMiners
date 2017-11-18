@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour {
         _PointerTransform = GetComponentInChildren<PointerMotor>().transform;
 
         _Animator = GetComponent<BarrelAnimator>();
+
+        //Manager = FindObjectOfType<GameManager1>();
     }
 
     // Update is called once per frame
