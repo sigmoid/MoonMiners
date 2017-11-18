@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SoundManagerController : MonoBehaviour {
 
+    public static bool exists;
+
     public AudioSource musicSource;
     public AudioSource[] sfxSources;
     public string[] clipNames;
@@ -16,17 +18,23 @@ public class SoundManagerController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        audioSourceQueue = new LinkedList<int>();
-		for (int i = 0; i < sfxSources.Length; i++) {
-            audioSourceQueue.AddLast(i);
+        if (!exists) {
+            DontDestroyOnLoad(this.gameObject);
+            exists = true;
+            audioSourceQueue = new LinkedList<int>();
+		    for (int i = 0; i < sfxSources.Length; i++) {
+                audioSourceQueue.AddLast(i);
+            }
+            namesToClips = new Dictionary<string, AudioClip>();
+            for (int i = 0; i < clipNames.Length; i++) {
+                namesToClips.Add(clipNames[i], clips[i]);
+            }
+            audioClipNamesToSource = new Dictionary<string, int>();
+            audioSourceToClipNames = new Dictionary<int, string>();
+        } else {
+            Destroy(this.gameObject);
         }
-        namesToClips = new Dictionary<string, AudioClip>();
-        for (int i = 0; i < clipNames.Length; i++) {
-            namesToClips.Add(clipNames[i], clips[i]);
-        }
-        audioClipNamesToSource = new Dictionary<string, int>();
-        audioSourceToClipNames = new Dictionary<int, string>();
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {

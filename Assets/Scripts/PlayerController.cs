@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour {
         _PointerTransform = GetComponentInChildren<PointerMotor>().transform;
 
         _Animator = GetComponent<BarrelAnimator>();
+
+        //Manager = FindObjectOfType<GameManager1>();
     }
 
     // Update is called once per frame
@@ -113,7 +115,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (_CapturedBall != null)
         {
-            _CapturedBall.velocityScale *= 2;
+            _CapturedBall.velocityScale += 2;
             _CapturedBall.GetComponent<BallScript>().SetVelocity(Muzzle.transform.right * _CapturedBall.velocityScale);
             _CapturedBall.transform.position += Muzzle.transform.right;
             _CapturedBall.GetComponent<Collider>().enabled = true;
