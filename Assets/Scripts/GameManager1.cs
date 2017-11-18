@@ -16,6 +16,7 @@ public class GameManager1 : MonoBehaviour {
     public Text scorePlayer1;
     public Text scorePlayer2;
     public Text pauseText;
+    public int winnerId;
 
     
     // All Serializable fields
@@ -47,6 +48,7 @@ public class GameManager1 : MonoBehaviour {
     private int player1Score;
     private int player2Score;
     private List<Transform> balls;
+    private SoundManagerController sm;
 
     private enum GameState {Main_Menu, Main_Game, Pause_Menu, Level_Menu};
     private GameState state;
@@ -57,6 +59,11 @@ public class GameManager1 : MonoBehaviour {
         if (!exists) {
             DontDestroyOnLoad(this.gameObject);
             balls = new List<Transform>();
+            exists = true;
+            state = GameState.Main_Menu;
+            sm = FindObjectOfType<SoundManagerController>();
+            sm.PlayMusicClip("Menu Music");
+
             ChangeScore(0, 0);
             StartLevel();
         } else {
@@ -89,6 +96,7 @@ public class GameManager1 : MonoBehaviour {
     // Restart Level
     public void RestartLevel() {
         state = GameState.Main_Game;
+        sm.StopMusicClip();
         pauseText.enabled = false;
         if (balls.Count > 0) {
             balls.ForEach(DestroyTransform);
@@ -149,7 +157,6 @@ public class GameManager1 : MonoBehaviour {
 
     // Player Die
     public void PlayerDies(int playerId) {
-        int winnerId;
         if (playerId == 1) {
             winnerId = 2;
         }
@@ -162,7 +169,11 @@ public class GameManager1 : MonoBehaviour {
             Debug.Log("You fool, that isn't a valid player ID!");
         }
         OpenEndLevelMenu(winnerId);
+        Debug.Log(winnerId);
         AddToScore(winnerId);
+        state = GameState.Level_Menu;
+        sm.PlayMusicClip("Menu Music");
+        //ChangeScene("LevelMenu");
         RestartLevel();
     }
 
