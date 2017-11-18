@@ -173,8 +173,8 @@ public class GameManager1 : MonoBehaviour {
         AddToScore(winnerId);
         state = GameState.Level_Menu;
         sm.PlayMusicClip("Menu Music");
-        //ChangeScene("LevelMenu");
-        RestartLevel();
+        ChangeScene("LevelMenu");
+        //RestartLevel();
     }
 
     public void DestroyTransform(Transform tf) {
